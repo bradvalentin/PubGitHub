@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "457584394930",
+    "firebase_url": "https://pubgithub.firebaseio.com",
+    "project_id": "pubgithub",
+    "storage_bucket": "pubgithub.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457584394930:android:bf4931549e10d807ceffab",
+        "android_client_info": {
+          "package_name": "com.example.vali.pubgithub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "457584394930-3s529ug63ffadfsa98amivjs8mb2ii6n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNLZ6J9SUXhMe6YBMViTaJjZTOKA78Xtg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "457584394930-3s529ug63ffadfsa98amivjs8mb2ii6n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

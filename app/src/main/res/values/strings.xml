@@ -1,0 +1,282 @@
+<resources>
+    <string name="app_name">PubGitHub</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Username</string>
+
+    <string name="menu_logout">Logout</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="button_login">Login</string>
+    <string name="button_login_with_browser">Login With Browser</string>
+    <string name="or_text">or</string>
+    <string name="repo_language">Language</string>
+    <string name="repo_stars">0</string>
+    <string name="repo_owner">Repository Owner</string>
+    <string name="repo_name">Repository name</string>
+    <string name="no_repository_found">No repository found</string>
+    <string name="some_error">Some error occurred, try again!</string>
+    <string name="no_username">No Username</string>
+    <string name="no_repo_name">No Repo Name</string>
+
+    <string-array name="languages">
+        <item>"ABAP"</item>
+        <item>"ABC"</item>
+        <item>"ActionScript"</item>
+        <item>"Ada"</item>
+        <item>"Agilent VEE"</item>
+        <item>"Algol"</item>
+        <item>"Alice"</item>
+        <item>"Angelscript"</item>
+        <item>"Apex"</item>
+        <item>"APL"</item>
+        <item>"AppleScript"</item>
+        <item>"Arc"</item>
+        <item>"Arduino"</item>
+        <item>"ASP"</item>
+        <item>"AspectJ"</item>
+        <item>"Assembly"</item>
+        <item>"ATLAS"</item>
+        <item>"Augeas"</item>
+        <item>"AutoHotkey"</item>
+        <item>"AutoIt"</item>
+        <item>"AutoLISP"</item>
+        <item>"Automator"</item>
+        <item>"Avenue"</item>
+        <item>"Awk"</item>
+        <item>"Bash"</item>
+        <item>"Visual Basic"</item>
+        <item>"bc"</item>
+        <item>"BCPL"</item>
+        <item>"BETA"</item>
+        <item>"BlitzMax"</item>
+        <item>"Boo"</item>
+        <item>"Bourne Shell"</item>
+        <item>"Bro"</item>
+        <item>"C"</item>
+        <item>"C Shell"</item>
+        <item>"C#"</item>
+        <item>"C++"</item>
+        <item>"C++/CLI"</item>
+        <item>"C-Omega"</item>
+        <item>"Caml"</item>
+        <item>"Ceylon"</item>
+        <item>"CFML"</item>
+        <item>"cg"</item>
+        <item>"Ch"</item>
+        <item>"CHILL"</item>
+        <item>"CIL"</item>
+        <item>"CL (OS/400)"</item>
+        <item>"Clarion"</item>
+        <item>"Clean"</item>
+        <item>"Clipper"</item>
+        <item>"Clojure"</item>
+        <item>"CLU"</item>
+        <item>"COBOL"</item>
+        <item>"Cobra"</item>
+        <item>"CoffeeScript"</item>
+        <item>"ColdFusion"</item>
+        <item>"COMAL"</item>
+        <item>"Common Lisp"</item>
+        <item>"Coq"</item>
+        <item>"cT"</item>
+        <item>"Curl"</item>
+        <item>"D"</item>
+        <item>"Dart"</item>
+        <item>"DCL"</item>
+        <item>"DCPU-16 ASM"</item>
+        <item>"Delphi/Object Pascal"</item>
+        <item>"DiBOL"</item>
+        <item>"Dylan"</item>
+        <item>"E"</item>
+        <item>"eC"</item>
+        <item>"Ecl"</item>
+        <item>"ECMAScript"</item>
+        <item>"EGL"</item>
+        <item>"Eiffel"</item>
+        <item>"Elixir"</item>
+        <item>"Emacs Lisp"</item>
+        <item>"Erlang"</item>
+        <item>"Etoys"</item>
+        <item>"Euphoria"</item>
+        <item>"EXEC"</item>
+        <item>"F#"</item>
+        <item>"Factor"</item>
+        <item>"Falcon"</item>
+        <item>"Fancy"</item>
+        <item>"Fantom"</item>
+        <item>"Felix"</item>
+        <item>"Forth"</item>
+        <item>"Fortran"</item>
+        <item>"Fortress"</item>
+        <item>"Visual FoxPro"</item>
+        <item>"Gambas"</item>
+        <item>"GNU Octave"</item>
+        <item>"Go"</item>
+        <item>"Google AppsScript"</item>
+        <item>"Gosu"</item>
+        <item>"Groovy"</item>
+        <item>"Haskell"</item>
+        <item>"haXe"</item>
+        <item>"Heron"</item>
+        <item>"HPL"</item>
+        <item>"HyperTalk"</item>
+        <item>"Icon"</item>
+        <item>"IDL"</item>
+        <item>"Inform"</item>
+        <item>"Informix-4GL"</item>
+        <item>"INTERCAL"</item>
+        <item>"Io"</item>
+        <item>"Ioke"</item>
+        <item>"J"</item>
+        <item>"J#"</item>
+        <item>"JADE"</item>
+        <item>"Java"</item>
+        <item>"Java FX Script"</item>
+        <item>"JavaScript"</item>
+        <item>"JScript"</item>
+        <item>"JScript.NET"</item>
+        <item>"Julia"</item>
+        <item>"Korn Shell"</item>
+        <item>"Kotlin"</item>
+        <item>"LabVIEW"</item>
+        <item>"Ladder Logic"</item>
+        <item>"Lasso"</item>
+        <item>"Limbo"</item>
+        <item>"Lingo"</item>
+        <item>"Lisp"</item>
+        <item>"Logo"</item>
+        <item>"Logtalk"</item>
+        <item>"LotusScript"</item>
+        <item>"LPC"</item>
+        <item>"Lua"</item>
+        <item>"Lustre"</item>
+        <item>"M4"</item>
+        <item>"MAD"</item>
+        <item>"Magic"</item>
+        <item>"Magik"</item>
+        <item>"Malbolge"</item>
+        <item>"MANTIS"</item>
+        <item>"Maple"</item>
+        <item>"Mathematica"</item>
+        <item>"MATLAB"</item>
+        <item>"Max/MSP"</item>
+        <item>"MAXScript"</item>
+        <item>"MEL"</item>
+        <item>"Mercury"</item>
+        <item>"Mirah"</item>
+        <item>"Miva"</item>
+        <item>"ML"</item>
+        <item>"Monkey"</item>
+        <item>"Modula-2"</item>
+        <item>"Modula-3"</item>
+        <item>"MOO"</item>
+        <item>"Moto"</item>
+        <item>"MS-DOS Batch"</item>
+        <item>"MUMPS"</item>
+        <item>"NATURAL"</item>
+        <item>"Nemerle"</item>
+        <item>"Nimrod"</item>
+        <item>"NQC"</item>
+        <item>"NSIS"</item>
+        <item>"Nu"</item>
+        <item>"NXT-G"</item>
+        <item>"Oberon"</item>
+        <item>"Object Rexx"</item>
+        <item>"Objective-C"</item>
+        <item>"Objective-J"</item>
+        <item>"OCaml"</item>
+        <item>"Occam"</item>
+        <item>"ooc"</item>
+        <item>"Opa"</item>
+        <item>"OpenCL"</item>
+        <item>"OpenEdge ABL"</item>
+        <item>"OPL"</item>
+        <item>"Oz"</item>
+        <item>"Paradox"</item>
+        <item>"Parrot"</item>
+        <item>"Pascal"</item>
+        <item>"Perl"</item>
+        <item>"PHP"</item>
+        <item>"Pike"</item>
+        <item>"PILOT"</item>
+        <item>"PL/I"</item>
+        <item>"PL/SQL"</item>
+        <item>"Pliant"</item>
+        <item>"PostScript"</item>
+        <item>"POV-Ray"</item>
+        <item>"PowerBasic"</item>
+        <item>"PowerScript"</item>
+        <item>"PowerShell"</item>
+        <item>"Processing"</item>
+        <item>"Prolog"</item>
+        <item>"Puppet"</item>
+        <item>"Pure Data"</item>
+        <item>"Python"</item>
+        <item>"Q"</item>
+        <item>"R"</item>
+        <item>"Racket"</item>
+        <item>"REALBasic"</item>
+        <item>"REBOL"</item>
+        <item>"Revolution"</item>
+        <item>"REXX"</item>
+        <item>"RPG (OS/400)"</item>
+        <item>"Ruby"</item>
+        <item>"Rust"</item>
+        <item>"S"</item>
+        <item>"S-PLUS"</item>
+        <item>"SAS"</item>
+        <item>"Sather"</item>
+        <item>"Scala"</item>
+        <item>"Scheme"</item>
+        <item>"Scilab"</item>
+        <item>"Scratch"</item>
+        <item>"sed"</item>
+        <item>"Seed7"</item>
+        <item>"Self"</item>
+        <item>"Shell"</item>
+        <item>"SIGNAL"</item>
+        <item>"Simula"</item>
+        <item>"Simulink"</item>
+        <item>"Slate"</item>
+        <item>"Smalltalk"</item>
+        <item>"Smarty"</item>
+        <item>"SPARK"</item>
+        <item>"SPSS"</item>
+        <item>"SQR"</item>
+        <item>"Squeak"</item>
+        <item>"Squirrel"</item>
+        <item>"Standard ML"</item>
+        <item>"Suneido"</item>
+        <item>"SuperCollider"</item>
+        <item>"Swift"</item>
+        <item>"TACL"</item>
+        <item>"Tcl"</item>
+        <item>"Tex"</item>
+        <item>"thinBasic"</item>
+        <item>"TOM"</item>
+        <item>"Turing"</item>
+        <item>"TypeScript"</item>
+        <item>"Vala/Genie"</item>
+        <item>"VBScript"</item>
+        <item>"Verilog"</item>
+        <item>"VHDL"</item>
+        <item>"VimL"</item>
+        <item>"Visual Basic .NET"</item>
+        <item>"WebDNA"</item>
+        <item>"Whitespace"</item>
+        <item>"X10"</item>
+        <item>"xBase"</item>
+        <item>"XBase++"</item>
+        <item>"Xen"</item>
+        <item>"XPL"</item>
+        <item>"XSLT"</item>
+        <item>"XQuery"</item>
+
+    </string-array>
+
+</resources>
