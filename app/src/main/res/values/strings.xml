@@ -5,15 +5,8 @@
     <string name="nav_header_title">Username</string>
 
     <string name="menu_logout">Logout</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
 
-    <string name="username_hint">Username</string>
-    <string name="password_hint">Password</string>
-    <string name="button_login">Login</string>
     <string name="button_login_with_browser">Login With Browser</string>
-    <string name="or_text">or</string>
     <string name="repo_language">Language</string>
     <string name="repo_stars">0</string>
     <string name="repo_owner">Repository Owner</string>

@@ -8,7 +8,5 @@
     <color name="colorGreyLight">#9e9e9e</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorGreyLighter">#e0e0e0</color>
-    <color name="colorTransparent">#00000000</color>
-    <color name="colorPurple">#7b1fa2</color>
     <color name="colorPurple60">#607b1fa2</color>
 </resources>
