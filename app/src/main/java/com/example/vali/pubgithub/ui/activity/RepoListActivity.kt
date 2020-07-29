@@ -3,24 +3,20 @@ package com.example.vali.pubgithub.ui.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.core.view.GravityCompat
-import androidx.appcompat.app.ActionBarDrawerToggle
-import android.view.MenuItem
-import com.google.android.material.navigation.NavigationView
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
-import kotlinx.android.synthetic.main.activity_repo_list.*
-import kotlinx.android.synthetic.main.app_bar_main.*
-
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.vali.pubgithub.data.entity.ProgrammingLanguage
 import com.example.vali.pubgithub.R
 import com.example.vali.pubgithub.data.entity.Owner
+import com.example.vali.pubgithub.data.entity.ProgrammingLanguage
 import com.example.vali.pubgithub.data.entity.RepoEntity
 import com.example.vali.pubgithub.ui.adapter.RepoListAdapter
 import com.example.vali.pubgithub.ui.contract.RepoListContract
@@ -28,17 +24,18 @@ import com.example.vali.pubgithub.ui.fragment.LanguageFilterDialog
 import com.example.vali.pubgithub.ui.presenter.RepoListPresenter
 import com.example.vali.pubgithub.utils.AnimationUtils.hideViewAnimated
 import com.example.vali.pubgithub.utils.AnimationUtils.showViewAnimated
-import com.ferfalk.simplesearchview.utils.DimensUtils
-import com.example.vali.pubgithub.utils.Constants.EXTRA_REVEAL_CENTER_PADDING
 import com.example.vali.pubgithub.utils.SharedPreferencesHelper
-import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.content_main.*
-import javax.inject.Inject
-import com.ferfalk.simplesearchview.SimpleSearchView
-import com.ferfalk.simplesearchview.SimpleSearchView.SearchViewListener
+import com.faltenreich.skeletonlayout.Skeleton
+import com.faltenreich.skeletonlayout.applySkeleton
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
+import dagger.android.AndroidInjection
+import kotlinx.android.synthetic.main.activity_repo_list.*
+import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
+import javax.inject.Inject
 
 class RepoListActivity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener,
@@ -56,6 +53,7 @@ class RepoListActivity : AppCompatActivity(),
     private lateinit var fm: FragmentManager
     private lateinit var allProgrammingLanguage: ArrayList<ProgrammingLanguage>
     private var owner: Owner? = null
+    private lateinit var skeleton: Skeleton;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,50 +76,54 @@ class RepoListActivity : AppCompatActivity(),
             false
         )
 
+
         repositoriesRecycler.layoutManager = reposLayoutManager
 
         reposAdapter = RepoListAdapter(this, this)
 
         repositoriesRecycler.adapter = reposAdapter
+        skeleton = repositoriesRecycler.applySkeleton(R.layout.repository_list_item, 3)
+
+        skeleton.showSkeleton();
 
         initScrollListener()
 
-        searchView.setOnQueryTextListener(object : SimpleSearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                searchQuery = query
-                repoListPresenter.getSearchRepos("$searchQuery$searchFilter", 0)
-
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                return false
-            }
-
-            override fun onQueryTextCleared(): Boolean {
-                if(::searchQuery.isInitialized && searchQuery.isNotEmpty()) {
-                    repoListPresenter.getAllRepos( 0)
-                    searchQuery = ""
-                }
-                return false
-            }
-        })
-        searchView.setOnSearchViewListener(object : SearchViewListener {
-            override fun onSearchViewShownAnimation() {
-            }
-
-            override fun onSearchViewClosedAnimation() {
-            }
-
-            override fun onSearchViewShown() {
-                if(::searchQuery.isInitialized) {
-                    searchView.searchEditText.setText(searchQuery)
-                }
-            }
-
-            override fun onSearchViewClosed() {
-            }
-        })
+//        searchView.setOnQueryTextListener(object : SimpleSearchView.OnQueryTextListener {
+//            override fun onQueryTextSubmit(query: String): Boolean {
+//                searchQuery = query
+//                repoListPresenter.getSearchRepos("$searchQuery$searchFilter", 0)
+//
+//                return false
+//            }
+//
+//            override fun onQueryTextChange(newText: String): Boolean {
+//                return false
+//            }
+//
+//            override fun onQueryTextCleared(): Boolean {
+//                if(::searchQuery.isInitialized && searchQuery.isNotEmpty()) {
+//                    repoListPresenter.getAllRepos( 0)
+//                    searchQuery = ""
+//                }
+//                return false
+//            }
+//        })
+//        searchView.setOnSearchViewListener(object : SearchViewListener {
+//            override fun onSearchViewShownAnimation() {
+//            }
+//
+//            override fun onSearchViewClosedAnimation() {
+//            }
+//
+//            override fun onSearchViewShown() {
+//                if(::searchQuery.isInitialized) {
+//                    searchView.searchEditText.setText(searchQuery)
+//                }
+//            }
+//
+//            override fun onSearchViewClosed() {
+//            }
+//        })
 
         allProgrammingLanguage = initSearchDialogData()
 
@@ -149,6 +151,10 @@ class RepoListActivity : AppCompatActivity(),
             .into(headerView.imageViewProfile)
     }
 
+    private fun onDataLoaded() {
+        skeleton.showOriginal()
+    }
+
     private fun openRepoDetailsInBrowser(urls: String?) {
         val uris = Uri.parse(urls)
         val intents = Intent(Intent.ACTION_VIEW, uris)
@@ -158,6 +164,7 @@ class RepoListActivity : AppCompatActivity(),
     override fun showRepos(repos: ArrayList<RepoEntity>?) {
         repos?.let {
             reposAdapter.setDataSource(it)
+            onDataLoaded()
         }
     }
 
@@ -295,25 +302,25 @@ class RepoListActivity : AppCompatActivity(),
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.search_menu, menu)
+      //  val inflater = menuInflater
+      //  inflater.inflate(R.menu.search_menu, menu)
 
-        setupSearchView(menu)
+       // setupSearchView(menu)
         return true
     }
 
-    private fun setupSearchView(menu: Menu) {
-        val item = menu.findItem(R.id.action_search)
-        searchView.setMenuItem(item)
-
-        val revealCenter = searchView.revealAnimationCenter
-        revealCenter.x -= DimensUtils.convertDpToPx(EXTRA_REVEAL_CENTER_PADDING, this)
-    }
+ // private fun setupSearchView(menu: Menu) {
+//        val item = menu.findItem(R.id.action_search)
+//        searchView.setMenuItem(item)
+//
+//        val revealCenter = searchView.revealAnimationCenter
+//        revealCenter.x -= DimensUtils.convertDpToPx(EXTRA_REVEAL_CENTER_PADDING, this)
+ //   }
 
     override fun onBackPressed() {
         when {
             drawer_layout.isDrawerOpen(GravityCompat.START) -> drawer_layout.closeDrawer(GravityCompat.START)
-            searchView.onBackPressed() -> return
+          //  searchView.onBackPressed() -> return
             else -> super.onBackPressed()
         }
     }

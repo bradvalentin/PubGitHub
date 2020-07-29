@@ -30,7 +30,9 @@ class RepoListPresenter(): RepoListContract.Presenter {
     }
 
     override fun getAllRepos(since: Long) {
-        view?.showLoading()
+        if(since != 0L) {
+            view?.showLoading()
+        }
         val getUserDisposable = gitHubRepo.getAllRepos(since)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -49,7 +51,8 @@ class RepoListPresenter(): RepoListContract.Presenter {
                 view?.hideLoading()
             },
                 { tr ->
-                    view?.onError(tr.localizedMessage)
+                    tr.localizedMessage?.let { it ->
+                        view?.onError(it) }
                     view?.hideLoading()
                     view?.showEmptyRepoList()
 
@@ -88,7 +91,8 @@ class RepoListPresenter(): RepoListContract.Presenter {
                 view?.hideLoading()
             },
                 { tr ->
-                    view?.onError(tr.localizedMessage)
+                    tr.localizedMessage?.let { it ->
+                        view?.onError(it) }
                     view?.hideLoading()
                     view?.showEmptyRepoList()
 

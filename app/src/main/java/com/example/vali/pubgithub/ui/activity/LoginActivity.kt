@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import dagger.android.AndroidInjection
+import kotlinx.android.synthetic.main.activity_splash_screen.*
 import javax.inject.Inject
 
 class LoginActivity : AppCompatActivity(), LoginContract.View {
@@ -37,13 +38,20 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
                 add("public_repo")
             }
         }
-        provider.setScopes(scopes)
+        provider.scopes = scopes
 
         loginPresenter.setView(this)
 
         buttonLoginBrowser.setSafeOnClickListener {
             loginPresenter.checkUserLogin()
+            motionLayoutLoginLoading.transitionToState(R.id.middle)
+
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        motionLayoutLogin.startLayoutAnimation()
     }
 
     override fun loginExistingUser(pendingResultTask: Task<AuthResult>) {
@@ -68,15 +76,18 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
     }
 
     override fun loginUserSuccess(owner: Owner) {
+        motionLayoutLoginLoading.transitionToState(R.id.start)
         SharedPreferencesHelper.saveOwner(owner, this)
         startRepoListActivity()
     }
 
     override fun loginUserFail() {
+        motionLayoutLoginLoading.transitionToState(R.id.start)
         Toast.makeText(this, resources.getString(R.string.some_error), Toast.LENGTH_SHORT).show()
     }
 
     override fun onError(errorMessage: String) {
+        motionLayoutLoginLoading.transitionToState(R.id.start)
         Toast.makeText(this, getString(R.string.some_error), Toast.LENGTH_LONG).show()
     }
 

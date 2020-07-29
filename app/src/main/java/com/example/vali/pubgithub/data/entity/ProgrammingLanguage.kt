@@ -9,7 +9,7 @@ class ProgrammingLanguage (
 ): Parcelable, Comparable<ProgrammingLanguage> {
 
     constructor(parcel: Parcel) : this(
-        parcel.readString(),
+        parcel.readString() ?: "Unknown",
         parcel.readByte() != 0.toByte()
     )
 

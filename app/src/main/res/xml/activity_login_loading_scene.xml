@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene
+
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+            motion:constraintSetEnd="@id/middle"
+            motion:constraintSetStart="@id/start"
+            motion:duration="500"
+            motion:motionInterpolator="linear">
+
+        <KeyFrameSet>
+
+            <KeyAttribute
+                    android:alpha="1"
+                    android:scaleX="1"
+                    android:scaleY="1"
+                    motion:framePosition="80"
+                    motion:motionTarget="@id/buttonLoginBrowser" />
+
+            <KeyAttribute
+                    android:alpha="0.1"
+                    motion:framePosition="90"
+                    motion:motionTarget="@id/cvProgressSpinner" />
+
+        </KeyFrameSet>
+
+    </Transition>
+
+    <Transition
+            motion:constraintSetEnd="@id/start"
+            motion:constraintSetStart="@id/middle"
+            motion:duration="500"
+            motion:motionInterpolator="linear">
+
+        <KeyFrameSet>
+
+            <KeyAttribute
+                    android:alpha="0.1"
+                    motion:framePosition="80"
+                    motion:motionTarget="@id/cvProgressSpinner" />
+
+            <KeyAttribute
+                    android:alpha="1"
+                    motion:framePosition="90"
+                    motion:motionTarget="@id/buttonLoginBrowser" />
+
+        </KeyFrameSet>
+
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+
+        <Constraint
+                android:id="@+id/buttonLoginBrowser"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="64dp"
+                android:layout_marginBottom="32dp"
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toBottomOf="@+id/imageViewLogo" />
+
+        <Constraint
+                android:id="@+id/cvProgressSpinner"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="64dp"
+                android:layout_marginBottom="32dp"
+                android:alpha="0"
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toBottomOf="@+id/imageViewLogo" />
+
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/middle">
+
+        <Constraint
+                android:id="@+id/buttonLoginBrowser"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="64dp"
+                android:layout_marginBottom="32dp"
+                android:alpha="0"
+                android:scaleX="0"
+                android:scaleY="1"
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toBottomOf="@+id/imageViewLogo" />
+
+        <Constraint
+                android:id="@+id/cvProgressSpinner"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="64dp"
+                android:layout_marginBottom="32dp"
+                android:alpha="1"
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toBottomOf="@+id/imageViewLogo" />
+
+    </ConstraintSet>
+
+</MotionScene>
