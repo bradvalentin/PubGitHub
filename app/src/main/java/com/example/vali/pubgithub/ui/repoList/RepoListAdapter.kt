@@ -56,7 +56,7 @@ class RepoListAdapter(val repoItemClickListener: RepoItemClickListener, val cont
         }
     }
 
-    fun setDataSource(dataSource: MutableList<RepoEntity>?) {
+    fun setDataSource(dataSource: List<RepoEntity>?) {
         dataSource?.let {ds ->
             val pos = repos.size
             val count = ds.size

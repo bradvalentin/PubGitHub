@@ -6,11 +6,15 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -19,9 +23,7 @@ import com.example.vali.pubgithub.data.entity.Owner
 import com.example.vali.pubgithub.data.entity.ProgrammingLanguage
 import com.example.vali.pubgithub.data.entity.RepoEntity
 import com.example.vali.pubgithub.ui.adapter.RepoListAdapter
-import com.example.vali.pubgithub.ui.contract.RepoListContract
 import com.example.vali.pubgithub.ui.fragment.LanguageFilterDialog
-import com.example.vali.pubgithub.ui.presenter.RepoListPresenter
 import com.example.vali.pubgithub.utils.AnimationUtils.hideViewAnimated
 import com.example.vali.pubgithub.utils.AnimationUtils.showViewAnimated
 import com.example.vali.pubgithub.utils.SharedPreferencesHelper
@@ -35,17 +37,17 @@ import kotlinx.android.synthetic.main.activity_repo_list.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class RepoListActivity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener,
-    RepoListContract.View,
     RepoListAdapter.RepoItemClickListener,
     LanguageFilterDialog.OnFragmentInteractionListener {
 
-    @Inject
-    lateinit var repoListPresenter: RepoListPresenter
-
+    private var resetList= false
+    private var isFirstTime = true
     private lateinit var reposLayoutManager: RecyclerView.LayoutManager
     private lateinit var reposAdapter: RepoListAdapter
     private lateinit var searchQuery: String
@@ -54,6 +56,10 @@ class RepoListActivity : AppCompatActivity(),
     private lateinit var allProgrammingLanguage: ArrayList<ProgrammingLanguage>
     private var owner: Owner? = null
     private lateinit var skeleton: Skeleton;
+
+    lateinit var repoListViewModel: RepoListViewModel
+    @Inject
+    lateinit var viewModeFactory: RepoListViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,9 +72,6 @@ class RepoListActivity : AppCompatActivity(),
         val json = SharedPreferencesHelper.getOwner(this)
         owner =  Gson().fromJson(json, Owner::class.java)
 
-        repoListPresenter.setView(this)
-        repoListPresenter.getAllRepos(0)
-
         reposLayoutManager = GridLayoutManager(
             this,
             1,
@@ -76,54 +79,16 @@ class RepoListActivity : AppCompatActivity(),
             false
         )
 
-
         repositoriesRecycler.layoutManager = reposLayoutManager
 
         reposAdapter = RepoListAdapter(this, this)
 
         repositoriesRecycler.adapter = reposAdapter
-        skeleton = repositoriesRecycler.applySkeleton(R.layout.repository_list_item, 3)
+        skeleton = repositoriesRecycler.applySkeleton(R.layout.repository_list_item, 12)
 
         skeleton.showSkeleton();
 
         initScrollListener()
-
-//        searchView.setOnQueryTextListener(object : SimpleSearchView.OnQueryTextListener {
-//            override fun onQueryTextSubmit(query: String): Boolean {
-//                searchQuery = query
-//                repoListPresenter.getSearchRepos("$searchQuery$searchFilter", 0)
-//
-//                return false
-//            }
-//
-//            override fun onQueryTextChange(newText: String): Boolean {
-//                return false
-//            }
-//
-//            override fun onQueryTextCleared(): Boolean {
-//                if(::searchQuery.isInitialized && searchQuery.isNotEmpty()) {
-//                    repoListPresenter.getAllRepos( 0)
-//                    searchQuery = ""
-//                }
-//                return false
-//            }
-//        })
-//        searchView.setOnSearchViewListener(object : SearchViewListener {
-//            override fun onSearchViewShownAnimation() {
-//            }
-//
-//            override fun onSearchViewClosedAnimation() {
-//            }
-//
-//            override fun onSearchViewShown() {
-//                if(::searchQuery.isInitialized) {
-//                    searchView.searchEditText.setText(searchQuery)
-//                }
-//            }
-//
-//            override fun onSearchViewClosed() {
-//            }
-//        })
 
         allProgrammingLanguage = initSearchDialogData()
 
@@ -149,6 +114,10 @@ class RepoListActivity : AppCompatActivity(),
             .circleCrop()
             .placeholder(R.drawable.baseline_account_box_white_48)
             .into(headerView.imageViewProfile)
+
+        repoListViewModel = ViewModelProvider(this, this.viewModeFactory).get(RepoListViewModel::class.java)
+        repoListViewModel.getAllRepos(0, withLoading = false)
+        observeViewModel()
     }
 
     private fun onDataLoaded() {
@@ -161,32 +130,70 @@ class RepoListActivity : AppCompatActivity(),
         startActivity(intents)
     }
 
-    override fun showRepos(repos: ArrayList<RepoEntity>?) {
+    private fun observeViewModel() {
+        repoListViewModel.repos.observe(this, Observer { repos ->
+            repos?.let {
+              if(it.isNotEmpty()) {
+                  showRepos(it)
+              }
+            }
+
+        })
+
+        repoListViewModel.emptyRepos.observe(this, Observer { isEmpty ->
+            isEmpty?.let {
+                if(it) showEmptyRepoList() else hideEmptyRepoList()
+            }
+        })
+
+        repoListViewModel.clearRepos.observe(this, Observer { clear ->
+            clear?.let {
+                clearRepoList()
+            }
+        })
+
+        repoListViewModel.reposLoadError.observe(this, Observer { isError ->
+            isError?.let {
+                onError(it)
+            }
+        })
+
+        repoListViewModel.loading.observe(this, Observer { isLoading ->
+            isLoading?.let {
+                if(it) showLoading() else hideLoading()
+            }
+        })
+    }
+
+    private fun showRepos(repos: List<RepoEntity>?) {
         repos?.let {
             reposAdapter.setDataSource(it)
-            onDataLoaded()
+            if(isFirstTime) {
+                onDataLoaded()
+                isFirstTime = false
+            }
         }
     }
 
-    override fun clearRepoList() {
+    private fun clearRepoList() {
         reposAdapter.clearDataSource()
     }
 
-    override fun showEmptyRepoList() {
+    private fun showEmptyRepoList() {
         showViewAnimated(noRepositoryFoundTextView, 1.0f, 200, View.VISIBLE)
         hideViewAnimated(repositoriesRecycler, 0f, 200, View.GONE)
     }
 
-    override fun hideEmptyRepoList() {
+    private fun hideEmptyRepoList() {
         hideViewAnimated(noRepositoryFoundTextView, 0f, 200, View.GONE)
         showViewAnimated(repositoriesRecycler, 1.0f, 200, View.VISIBLE)
     }
 
-    override fun showLoading() {
+    private fun showLoading() {
         showViewAnimated(progressBar, 1.0f, 200, View.VISIBLE)
     }
 
-    override fun hideLoading() {
+    private fun hideLoading() {
         hideViewAnimated(progressBar, 0f, 200, View.GONE)
     }
 
@@ -194,7 +201,7 @@ class RepoListActivity : AppCompatActivity(),
         openRepoDetailsInBrowser(repoEntity.htmlUrl)
     }
 
-    override fun onError(errorMessage: String) {
+    private fun onError(errorMessage: String) {
         Toast.makeText(this, getString(R.string.some_error), Toast.LENGTH_LONG).show()
     }
 
@@ -219,12 +226,12 @@ class RepoListActivity : AppCompatActivity(),
         last.totalPages?.let {
             last.page?.let { p->
                 if(!last.isLastPage()){
-                    repoListPresenter.getSearchRepos("$searchQuery$searchFilter", p.plus(1))
+                    repoListViewModel.getSearchRepos("$searchQuery$searchFilter", p.plus(1))
                 }
             }
 
         } ?:run {
-            repoListPresenter.getAllRepos(last.id.plus(1))
+            repoListViewModel.getAllRepos(last.id.plus(1), withLoading = true)
         }
     }
 
@@ -284,7 +291,7 @@ class RepoListActivity : AppCompatActivity(),
         }
 
         if(::searchQuery.isInitialized && searchQuery.isNotEmpty()){
-            repoListPresenter.getSearchRepos("$searchQuery$searchFilter", 0)
+            repoListViewModel.getSearchRepos("$searchQuery$searchFilter", 0)
         }
 
         dismissFragment("languageFilterDialog")
@@ -302,25 +309,49 @@ class RepoListActivity : AppCompatActivity(),
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-      //  val inflater = menuInflater
-      //  inflater.inflate(R.menu.search_menu, menu)
+        val inflater = menuInflater
+        inflater.inflate(R.menu.main_search, menu)
 
-       // setupSearchView(menu)
+        setupSearchView(menu)
         return true
     }
 
- // private fun setupSearchView(menu: Menu) {
-//        val item = menu.findItem(R.id.action_search)
-//        searchView.setMenuItem(item)
-//
-//        val revealCenter = searchView.revealAnimationCenter
-//        revealCenter.x -= DimensUtils.convertDpToPx(EXTRA_REVEAL_CENTER_PADDING, this)
- //   }
+    private fun setupSearchView(menu: Menu) {
+        val item = menu.findItem(R.id.menu_search)
+
+        val searchView = item.actionView as SearchView
+        val editText = searchView.findViewById<EditText>(R.id.search_src_text)
+        editText.hint = getString(R.string.search_view_hint)
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+
+            override fun onQueryTextSubmit(query: String): Boolean {
+
+                if(query.isNotEmpty()) {
+                    searchQuery = query.toLowerCase(Locale.getDefault())
+                    repoListViewModel.getSearchRepos("$searchQuery$searchFilter", 0)
+                    resetList = true
+                }
+
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                if(newText.isEmpty() && resetList){
+                    resetList = false
+                    searchQuery = newText
+                    repoListViewModel.getAllRepos(0, withLoading = true)
+                }
+                return true
+            }
+
+        })
+
+    }
 
     override fun onBackPressed() {
         when {
             drawer_layout.isDrawerOpen(GravityCompat.START) -> drawer_layout.closeDrawer(GravityCompat.START)
-          //  searchView.onBackPressed() -> return
             else -> super.onBackPressed()
         }
     }
@@ -342,9 +373,4 @@ class RepoListActivity : AppCompatActivity(),
         return true
     }
 
-    override fun onDestroy() {
-        repoListPresenter.dispose()
-        repoListPresenter.detachView()
-        super.onDestroy()
-    }
 }
