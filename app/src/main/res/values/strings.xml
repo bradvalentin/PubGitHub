@@ -15,6 +15,9 @@
     <string name="some_error">Some error occurred, try again!</string>
     <string name="no_username">No Username</string>
     <string name="no_repo_name">No Repo Name</string>
+    <string name="search_view_hint">Search here...</string>
+    <string name="public_repo">public_repo</string>
+    <string name="github_site">github.com</string>
 
     <string-array name="languages">
         <item>"ABAP"</item>

@@ -1,4 +1,4 @@
-package com.example.vali.pubgithub.ui.adapter
+package com.example.vali.pubgithub.ui.repoList
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -75,7 +75,9 @@ class RepoListAdapter(val repoItemClickListener: RepoItemClickListener, val cont
         val v = LayoutInflater.from(parent.context)
             .inflate(R.layout.repository_list_item, parent, false)
 
-        return ViewHolder(v)
+        return ViewHolder(
+            v
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

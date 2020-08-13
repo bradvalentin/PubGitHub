@@ -13,7 +13,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".ui.activity.SplashScreenActivity"
+                android:name=".ui.splashScreen.SplashScreenActivity"
                 android:configChanges="orientation|screenSize"
                 android:screenOrientation="portrait"
                 android:noHistory="true"
@@ -28,14 +28,14 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".ui.activity.LoginActivity"
+                android:name=".ui.login.LoginActivity"
                 android:configChanges="orientation|screenSize"
                 android:screenOrientation="portrait"
                 android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
         <activity
-                android:name=".ui.activity.RepoListActivity"
+                android:name=".ui.repoList.RepoListActivity"
                 android:configChanges="orientation|screenSize"
                 android:screenOrientation="portrait"
                 android:theme="@style/AppTheme.NoActionBar">

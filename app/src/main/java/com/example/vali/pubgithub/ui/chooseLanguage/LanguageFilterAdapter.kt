@@ -1,4 +1,4 @@
-package com.example.vali.pubgithub.ui.adapter
+package com.example.vali.pubgithub.ui.chooseLanguage
 
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +13,7 @@ import com.example.vali.pubgithub.R
 import com.example.vali.pubgithub.data.entity.ProgrammingLanguage
 import com.example.vali.pubgithub.utils.setSafeOnClickListener
 
-class LanguageFilterAdapter(val languageSelectedListener: LanguageSelectedListener ) : RecyclerView.Adapter<LanguageFilterAdapter.ViewHolder>() {
+class LanguageFilterAdapter(val languageSelectedListener: LanguageSelectedListener) : RecyclerView.Adapter<LanguageFilterAdapter.ViewHolder>() {
 
     private lateinit var languageList: ArrayList<ProgrammingLanguage>
 
@@ -41,7 +41,9 @@ class LanguageFilterAdapter(val languageSelectedListener: LanguageSelectedListen
         val v = LayoutInflater.from(parent.context)
             .inflate(R.layout.language_list_item, parent, false)
 
-        return ViewHolder(v)
+        return ViewHolder(
+            v
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

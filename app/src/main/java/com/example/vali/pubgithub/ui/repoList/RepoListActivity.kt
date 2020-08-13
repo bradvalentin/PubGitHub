@@ -1,4 +1,4 @@
-package com.example.vali.pubgithub.ui.activity
+package com.example.vali.pubgithub.ui.repoList
 
 import android.content.Intent
 import android.net.Uri
@@ -22,8 +22,8 @@ import com.example.vali.pubgithub.R
 import com.example.vali.pubgithub.data.entity.Owner
 import com.example.vali.pubgithub.data.entity.ProgrammingLanguage
 import com.example.vali.pubgithub.data.entity.RepoEntity
-import com.example.vali.pubgithub.ui.adapter.RepoListAdapter
-import com.example.vali.pubgithub.ui.fragment.LanguageFilterDialog
+import com.example.vali.pubgithub.ui.chooseLanguage.LanguageFilterDialog
+import com.example.vali.pubgithub.ui.login.LoginActivity
 import com.example.vali.pubgithub.utils.AnimationUtils.hideViewAnimated
 import com.example.vali.pubgithub.utils.AnimationUtils.showViewAnimated
 import com.example.vali.pubgithub.utils.SharedPreferencesHelper
@@ -81,7 +81,8 @@ class RepoListActivity : AppCompatActivity(),
 
         repositoriesRecycler.layoutManager = reposLayoutManager
 
-        reposAdapter = RepoListAdapter(this, this)
+        reposAdapter =
+            RepoListAdapter(this, this)
 
         repositoriesRecycler.adapter = reposAdapter
         skeleton = repositoriesRecycler.applySkeleton(R.layout.repository_list_item, 12)

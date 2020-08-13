@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/app_bar_main"
-        tools:context=".ui.activity.RepoListActivity">
+        tools:context=".ui.repoList.RepoListActivity">
 
 
     <androidx.recyclerview.widget.RecyclerView

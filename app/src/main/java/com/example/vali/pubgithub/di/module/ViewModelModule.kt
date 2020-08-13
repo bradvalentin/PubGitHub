@@ -1,21 +1,26 @@
 package com.example.vali.pubgithub.di.module
 
 import com.example.vali.pubgithub.data.GitHubRepository
-import com.example.vali.pubgithub.ui.activity.RepoListViewModelFactory
+import com.example.vali.pubgithub.ui.login.LoginViewModelFactory
+import com.example.vali.pubgithub.ui.repoList.RepoListViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 
 @Module
-class PresenterModule {
+class ViewModelModule {
 
     @Provides
-    fun provideLoginPresenter(firebaseAuth: FirebaseAuth): LoginPresenter {
-        return LoginPresenter(firebaseAuth)
+    fun provideLoginViewModelFactory(firebaseAuth: FirebaseAuth): LoginViewModelFactory {
+        return LoginViewModelFactory(
+            firebaseAuth
+        )
     }
 
     @Provides
     fun provideRepoListViewModelFactory(repository: GitHubRepository): RepoListViewModelFactory {
-        return RepoListViewModelFactory(repository)
+        return RepoListViewModelFactory(
+            repository
+        )
     }
 }

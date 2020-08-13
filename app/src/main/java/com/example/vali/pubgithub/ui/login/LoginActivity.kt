@@ -1,4 +1,4 @@
-package com.example.vali.pubgithub.ui.activity
+package com.example.vali.pubgithub.ui.login
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.vali.pubgithub.R
 import com.example.vali.pubgithub.data.entity.Owner
+import com.example.vali.pubgithub.ui.repoList.RepoListActivity
 import com.example.vali.pubgithub.utils.SharedPreferencesHelper
 import com.example.vali.pubgithub.utils.setSafeOnClickListener
 import com.google.android.gms.tasks.Task

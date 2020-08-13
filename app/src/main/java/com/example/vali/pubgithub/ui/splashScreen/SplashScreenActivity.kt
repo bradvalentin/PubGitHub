@@ -1,4 +1,4 @@
-package com.example.vali.pubgithub.ui.activity
+package com.example.vali.pubgithub.ui.splashScreen
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,7 +7,8 @@ import android.os.Handler
 import androidx.constraintlayout.motion.widget.MotionLayout
 import com.example.vali.pubgithub.R
 import com.example.vali.pubgithub.data.entity.Owner
-import com.example.vali.pubgithub.utils.Constants
+import com.example.vali.pubgithub.ui.login.LoginActivity
+import com.example.vali.pubgithub.ui.repoList.RepoListActivity
 import com.example.vali.pubgithub.utils.SharedPreferencesHelper
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_splash_screen.*

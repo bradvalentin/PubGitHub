@@ -6,6 +6,7 @@ import com.example.vali.pubgithub.utils.Constants.GITHUB_BASE_URL
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
@@ -52,6 +53,7 @@ class ApiModule {
         val httpClient = OkHttpClient.Builder()
         httpClient.cache(cache)
         httpClient.addInterceptor(logging)
+        httpClient.retryOnConnectionFailure(true)
         httpClient.connectTimeout(30, TimeUnit.SECONDS)
         httpClient.readTimeout(30, TimeUnit.SECONDS)
         return httpClient.build()

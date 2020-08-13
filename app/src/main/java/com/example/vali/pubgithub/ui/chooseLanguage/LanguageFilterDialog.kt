@@ -1,4 +1,4 @@
-package com.example.vali.pubgithub.ui.fragment
+package com.example.vali.pubgithub.ui.chooseLanguage
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vali.pubgithub.R
 import com.example.vali.pubgithub.data.entity.ProgrammingLanguage
-import com.example.vali.pubgithub.ui.adapter.LanguageFilterAdapter
 import kotlinx.android.synthetic.main.fragment_language_list.view.*
 
 class LanguageFilterDialog: DialogFragment(),
@@ -50,7 +49,8 @@ class LanguageFilterDialog: DialogFragment(),
         )
 
         view.recyclerLanguageFilter.layoutManager = languageLayoutManager
-        adapter = LanguageFilterAdapter(this)
+        adapter =
+            LanguageFilterAdapter(this)
         view.recyclerLanguageFilter.adapter = adapter
 
         builder.setView(view)

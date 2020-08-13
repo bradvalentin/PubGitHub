@@ -1,7 +1,7 @@
 package com.example.vali.pubgithub.di.module
 
-import com.example.vali.pubgithub.ui.activity.LoginActivity
-import com.example.vali.pubgithub.ui.activity.RepoListActivity
+import com.example.vali.pubgithub.ui.login.LoginActivity
+import com.example.vali.pubgithub.ui.repoList.RepoListActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
