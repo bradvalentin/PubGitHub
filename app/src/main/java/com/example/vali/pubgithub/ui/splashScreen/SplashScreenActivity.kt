@@ -3,7 +3,6 @@ package com.example.vali.pubgithub.ui.splashScreen
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import androidx.constraintlayout.motion.widget.MotionLayout
 import com.example.vali.pubgithub.R
 import com.example.vali.pubgithub.data.entity.Owner
@@ -15,15 +14,12 @@ import kotlinx.android.synthetic.main.activity_splash_screen.*
 
 class SplashScreenActivity : AppCompatActivity() {
 
-    lateinit var handler: Handler
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
 
         val owner = SharedPreferencesHelper.getOwner(this)
 
-        handler = Handler()
         val intent = Gson().fromJson(owner, Owner::class.java)?.let {
             Intent(this, RepoListActivity::class.java)
         } ?: run {
@@ -47,12 +43,6 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         motionLayout.startLayoutAnimation()
-    }
-
-    override fun onStop() {
-        handler.removeCallbacksAndMessages(null)
-        finish()
-        super.onStop()
     }
 
 

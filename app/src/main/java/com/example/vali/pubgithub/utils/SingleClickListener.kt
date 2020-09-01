@@ -3,9 +3,9 @@ package com.example.vali.pubgithub.utils
 import android.os.SystemClock
 import android.view.View
 
-class SafeClickListener(
+class SingleClickListener(
     private var defaultInterval: Int = 1000,
-    private val onSafeCLick: (View) -> Unit
+    private val onSafeCLick: () -> Unit
 ) : View.OnClickListener {
     private var lastTimeClicked: Long = 0
     override fun onClick(v: View) {
@@ -13,6 +13,6 @@ class SafeClickListener(
             return
         }
         lastTimeClicked = SystemClock.elapsedRealtime()
-        onSafeCLick(v)
+        onSafeCLick()
     }
 }

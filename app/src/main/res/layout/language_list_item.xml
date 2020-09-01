@@ -1,47 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   android:layout_width="match_parent"
-                                                   android:id="@+id/languageContainer"
-                                                   android:layout_marginTop="1dp"
-                                                   android:layout_height="wrap_content"
-                                                   android:background="@color/colorGreyLighter"
->
 
-    <ImageView android:layout_width="30dp"
-               android:layout_height="30dp"
-               android:scaleType="fitXY"
-               app:layout_constraintDimensionRatio="1:1"
-               app:layout_constraintBottom_toBottomOf="parent"
-               android:src="@drawable/baseline_check_black_48"
-               android:layout_marginTop="16dp"
-               android:visibility="gone"
-               app:layout_constraintTop_toTopOf="parent"
-               app:layout_constraintStart_toStartOf="parent"
-               android:layout_marginStart="16dp"
-               android:layout_marginBottom="16dp"
-               android:id="@+id/selectedLanguageImageView"
-    />
+<layout>
 
-    <TextView android:layout_width="0dp"
-              android:layout_height="wrap_content"
-              android:maxLines="1"
-              android:lines="1"
-              android:paddingStart="26dp"
-              android:paddingEnd="26dp"
-              android:paddingBottom="6dp"
-              android:paddingTop="6dp"
-              android:textSize="20sp"
-              android:id="@+id/languageName"
-              android:textColor="@color/colorPrimaryDark"
-              android:layout_marginTop="4dp"
-              android:layout_marginEnd="10dp"
-              app:layout_constraintEnd_toEndOf="parent"
-              android:layout_marginBottom="4dp"
-              android:ellipsize="end"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintTop_toTopOf="parent"
-              app:layout_constraintStart_toEndOf="@+id/selectedLanguageImageView"
-              android:layout_marginStart="8dp"/>
+    <data>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <import type="android.view.View" />
+
+        <variable
+                name="position"
+                type="int"/>
+
+        <variable
+                name="lang"
+                type="com.example.vali.pubgithub.data.entity.ProgrammingLanguage" />
+
+        <variable
+                name="listener"
+                type="com.example.vali.pubgithub.ui.chooseLanguage.LanguageFilterAdapter.LanguageSelectedListener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/languageContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:onSingleClick='@{() -> listener.languageSelected(lang, position)}'
+            android:background="@color/colorGreyLighter">
+
+        <ImageView
+                android:id="@+id/selectedLanguageImageView"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/baseline_check_black_48"
+                android:visibility='@{lang.selected ? View.VISIBLE : View.GONE, default=gone}'
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+                android:id="@+id/languageName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="4dp"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text='@{lang.name}'
+                android:visibility='@{lang.name != null ? View.VISIBLE : View.GONE, default=visible}'
+                android:maxLines="1"
+                android:paddingStart="26dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="26dp"
+                android:paddingBottom="6dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/selectedLanguageImageView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,5 +1,6 @@
 package com.example.vali.pubgithub.ui.repoList
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
@@ -12,17 +13,27 @@ import io.reactivex.schedulers.Schedulers
 
 class RepoListViewModel(private val githubRepository: GitHubRepository) : ViewModel() {
 
-    val repos = MutableLiveData<List<RepoEntity>>()
-    val reposLoadError = MutableLiveData<String>()
-    val loading = MutableLiveData<Boolean>()
-    val clearRepos = MutableLiveData<Boolean>()
-    val emptyRepos = MutableLiveData<Boolean>()
+    private val _repos = MutableLiveData<List<RepoEntity>>()
+    val repos: LiveData<List<RepoEntity>>
+        get() = _repos
+    private val _reposLoadError = MutableLiveData<String>()
+    val reposLoadError: LiveData<String>
+        get() = _reposLoadError
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean>
+        get() = _loading
+    private val _clearRepos = MutableLiveData<Boolean>()
+    val clearRepos: LiveData<Boolean>
+        get() = _clearRepos
+    private val _emptyRepos = MutableLiveData<Boolean>()
+    val emptyRepos: LiveData<Boolean>
+        get() = _emptyRepos
 
     private var disposeBag: CompositeDisposable = CompositeDisposable()
 
     fun getAllRepos(since: Long, withLoading: Boolean) {
         if (withLoading) {
-            loading.value = true
+            _loading.value = true
         }
         disposeBag.add(
             githubRepository.getAllRepos(since)
@@ -32,21 +43,21 @@ class RepoListViewModel(private val githubRepository: GitHubRepository) : ViewMo
                 .subscribe(
                     { repoList ->
                         if (since == 0L) {
-                            emptyRepos.value = repoList.body()?.size ?: 0 == 0
-                            clearRepos.value = true
+                            _emptyRepos.value = repoList.body()?.size ?: 0 == 0
+                            _clearRepos.value = true
                         }
 
-                        repos.value = repoList.body()
+                        _repos.value = repoList.body()
 
-                        loading.value = false
+                        _loading.value = false
 
                     },
                     { tr ->
                         tr.localizedMessage?.let { it ->
-                            reposLoadError.value = it
+                            _reposLoadError.value = it
                         }
 
-                        loading.value = false
+                        _loading.value = false
 
                     }
 
@@ -55,7 +66,7 @@ class RepoListViewModel(private val githubRepository: GitHubRepository) : ViewMo
     }
 
     fun getSearchRepos(query: String, page: Long) {
-        loading.value = true
+        _loading.value = true
         disposeBag.add(
             githubRepository.getSearchRepos(query, page)
                 .subscribeOn(Schedulers.io())
@@ -72,21 +83,21 @@ class RepoListViewModel(private val githubRepository: GitHubRepository) : ViewMo
                 }
                 .subscribe({ repoList ->
                     if (page == 0L) {
-                        emptyRepos.value = repoList.body()?.items?.size ?: 0 == 0
-                        clearRepos.value = true
+                        _emptyRepos.value = repoList.body()?.items?.size ?: 0 == 0
+                        _clearRepos.value = true
                     }
 
-                    repos.value = repoList.body()?.items
+                    _repos.value = repoList.body()?.items
 
-                    loading.value = false
+                    _loading.value = false
 
                 },
                     { tr ->
                         tr.localizedMessage?.let { it ->
-                            reposLoadError.value = it
+                            _reposLoadError.value = it
                         }
-                        loading.value = false
-                        emptyRepos.value = true
+                        _loading.value = false
+                        _emptyRepos.value = true
 
                     })
         )

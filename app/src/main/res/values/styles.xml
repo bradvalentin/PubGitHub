@@ -18,8 +18,8 @@
     </style>
 
     <style name="WindowAnimationStyle">
-        <item name="android:windowEnterAnimation">@anim/fade</item>
-    </style>
+    <item name="android:windowEnterAnimation">@anim/fade</item>
+</style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light"/>

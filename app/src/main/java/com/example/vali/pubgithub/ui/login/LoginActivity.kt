@@ -1,25 +1,29 @@
 package com.example.vali.pubgithub.ui.login
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.vali.pubgithub.R
 import com.example.vali.pubgithub.data.entity.Owner
+import com.example.vali.pubgithub.databinding.ActivityLoginBinding
 import com.example.vali.pubgithub.ui.repoList.RepoListActivity
 import com.example.vali.pubgithub.utils.SharedPreferencesHelper
-import com.example.vali.pubgithub.utils.setSafeOnClickListener
+import com.example.vali.pubgithub.utils.setOnSingleClickListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
-import kotlinx.android.synthetic.main.activity_login.*
-import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.OAuthProvider
 import dagger.android.AndroidInjection
+import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
+import kotlin.random.Random
 
-class LoginActivity : AppCompatActivity() {
+
+class LoginActivity : AppCompatActivity(), LoginClickInterface {
 
     lateinit var provider: OAuthProvider.Builder
     lateinit var loginViewModel: LoginViewModel
@@ -30,23 +34,23 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         AndroidInjection.inject(this)
 
-        setContentView(R.layout.activity_login)
+        val binding: ActivityLoginBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_login)
+        binding.listener = this
 
         provider = OAuthProvider.newBuilder(getString(R.string.github_site))
+
         val scopes = object : ArrayList<String>() {
             init {
                 add(getString(R.string.public_repo))
             }
         }
+
         provider.scopes = scopes
 
         loginViewModel = ViewModelProvider(this, this.viewModeFactory).get(LoginViewModel::class.java)
         observeViewModel()
-        buttonLoginBrowser.setSafeOnClickListener {
-            loginViewModel.checkUserLogin()
-            motionLayoutLoginLoading.transitionToState(R.id.middle)
 
-        }
     }
 
     override fun onResume() {
@@ -83,7 +87,7 @@ class LoginActivity : AppCompatActivity() {
                 loginViewModel.getUserInfo(it)
             }
             .addOnFailureListener {
-                loginUserFail()
+                loginUserFail(it.localizedMessage)
             }
     }
 
@@ -94,7 +98,7 @@ class LoginActivity : AppCompatActivity() {
                 loginViewModel.getUserInfo(it)
             }
             .addOnFailureListener {
-                loginUserFail()
+                loginUserFail(it.localizedMessage)
             }
     }
 
@@ -104,9 +108,9 @@ class LoginActivity : AppCompatActivity() {
         startRepoListActivity()
     }
 
-    private fun loginUserFail() {
+    private fun loginUserFail(text: String) {
         motionLayoutLoginLoading.transitionToState(R.id.start)
-        Toast.makeText(this, resources.getString(R.string.some_error), Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, resources.getString(R.string.some_error).plus(": ").plus(text), Toast.LENGTH_SHORT).show()
     }
 
     private fun startRepoListActivity() {
@@ -114,4 +118,11 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
+    override fun onLoginClicked() {
+        loginViewModel.checkUserLogin()
+        motionLayoutLoginLoading.transitionToState(R.id.middle)
+    }
+
+
 }

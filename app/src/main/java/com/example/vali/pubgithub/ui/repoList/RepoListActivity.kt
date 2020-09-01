@@ -43,7 +43,7 @@ import kotlin.collections.ArrayList
 
 class RepoListActivity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener,
-    RepoListAdapter.RepoItemClickListener,
+    RepoItemClickListener,
     LanguageFilterDialog.OnFragmentInteractionListener {
 
     private var resetList= false
@@ -82,7 +82,7 @@ class RepoListActivity : AppCompatActivity(),
         repositoriesRecycler.layoutManager = reposLayoutManager
 
         reposAdapter =
-            RepoListAdapter(this, this)
+            RepoListAdapter(this)
 
         repositoriesRecycler.adapter = reposAdapter
         skeleton = repositoriesRecycler.applySkeleton(R.layout.repository_list_item, 12)
