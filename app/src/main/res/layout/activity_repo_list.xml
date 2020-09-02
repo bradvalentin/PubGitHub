@@ -1,28 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/drawer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        tools:openDrawer="start">
 
-    <include
-            layout="@layout/app_bar_main"
+<layout>
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+                name="repoViewModel"
+                type="com.example.vali.pubgithub.ui.repoList.RepoListViewModel" />
+    </data>
+
+    <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/drawer_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    <com.google.android.material.navigation.NavigationView
-            android:id="@+id/nav_view"
-            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            android:theme="@style/ToolbarTheme"
-            app:itemTextColor="@color/colorPrimary"
-            app:headerLayout="@layout/nav_header_main"
-            app:menu="@menu/activity_main_drawer"/>
+            tools:openDrawer="start">
 
-</androidx.drawerlayout.widget.DrawerLayout>
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/app_bar_main_layout"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".ui.repoList.RepoListActivity">
+
+            <com.google.android.material.appbar.AppBarLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:theme="@style/AppTheme.AppBarOverlay">
+
+                <FrameLayout
+                        android:id="@+id/toolbar_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.Toolbar
+                            android:id="@+id/toolbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="?attr/actionBarSize"
+                            android:background="?attr/colorPrimary"
+                            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                    </androidx.appcompat.widget.Toolbar>
+
+
+                </FrameLayout>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    tools:context=".ui.repoList.RepoListActivity"
+                   >
+
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/repositoriesRecycler"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:overScrollMode="never"
+                        android:animatedVisibility="@{repoViewModel.emptyRepos}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:listitem="@layout/repository_list_item">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <TextView
+                        android:id="@+id/noRepositoryFoundTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/no_repository_found"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="22sp"
+                        android:animatedVisibility="@{repoViewModel.emptyRepos}"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                <ProgressBar
+                        android:id="@+id/progressBar"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:animatedVisibility="@{repoViewModel.loading}"
+                        android:visibility="gone"
+                        android:indeterminate="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:backgroundTint="@color/colorAccent"
+                    android:layout_margin="@dimen/fab_margin"
+                    app:srcCompat="@drawable/baseline_filter_list_white_48"/>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <com.google.android.material.navigation.NavigationView
+                android:id="@+id/nav_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:fitsSystemWindows="true"
+                android:theme="@style/ToolbarTheme"
+                app:headerLayout="@layout/nav_header_main"
+                app:itemTextColor="@color/colorPrimary"
+                app:menu="@menu/activity_main_drawer" />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+</layout>
