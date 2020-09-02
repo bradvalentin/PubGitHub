@@ -1,6 +1,5 @@
 package com.example.vali.pubgithub.ui.repoList
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -38,16 +37,14 @@ class RepoListAdapter(private val repoItemClickListener: RepoItemClickListener) 
     }
 
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
-
-        holder.view.repo = repos[position]
-        holder.view.listener = repoItemClickListener
-        holder.view.executePendingBindings()
-
+        holder.view.apply {
+            repo = repos[position]
+            listener = repoItemClickListener
+            executePendingBindings()
+        }
     }
 
-    override fun getItemId(index: Int): Long {
-        return getItemId(index)
-    }
+    override fun getItemId(index: Int): Long = getItemId(index)
 
     override fun getItemCount(): Int = repos.size
 

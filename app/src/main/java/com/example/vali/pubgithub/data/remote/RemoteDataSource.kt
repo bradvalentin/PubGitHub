@@ -3,12 +3,13 @@ package com.example.vali.pubgithub.data.remote
 import com.example.vali.pubgithub.data.entity.RepoEntity
 import com.example.vali.pubgithub.data.remote.api.GitHubApiService
 import com.example.vali.pubgithub.data.remote.model.GitHubApiResponse
-import com.example.vali.pubgithub.utils.Constants.QUERY_ORDER
-import com.example.vali.pubgithub.utils.Constants.QUERY_SORT
 import io.reactivex.Observable
 import retrofit2.Response
 import java.util.ArrayList
 import javax.inject.Inject
+
+const val QUERY_SORT = "stars"
+const val QUERY_ORDER = "desc"
 
 class RemoteDataSource(): RemoteDataSourceInterface {
 

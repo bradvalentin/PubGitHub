@@ -16,8 +16,12 @@ class LanguageFilterDialog: DialogFragment(),
     LanguageFilterAdapter.LanguageSelectedListener{
 
     private var listener: OnFragmentInteractionListener? = null
-    private lateinit var adapter: LanguageFilterAdapter
-    private lateinit var languageLayoutManager: RecyclerView.LayoutManager
+    private val languageAdapter: LanguageFilterAdapter by lazy {LanguageFilterAdapter(this)}
+    private val languageLayoutManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(
+        this.activity,
+        RecyclerView.VERTICAL,
+        false
+    ) }
 
     override fun onStart() {
         super.onStart()
@@ -28,10 +32,8 @@ class LanguageFilterDialog: DialogFragment(),
     override fun onResume() {
         super.onResume()
         val args = arguments
-        val languageList = args?.getParcelableArrayList<ProgrammingLanguage>("languageList")
-
-        languageList?.let {
-            adapter.setDataSource(it)
+        args?.getParcelableArrayList<ProgrammingLanguage>(getString(R.string.language_list_text))?.let {languageList ->
+            languageAdapter.setDataSource(languageList)
         }
         arguments?.clear()
 
@@ -42,16 +44,10 @@ class LanguageFilterDialog: DialogFragment(),
         val builder = AlertDialog.Builder(context)
         val view = LayoutInflater.from(context).inflate(R.layout.fragment_language_list, null, false)
 
-        languageLayoutManager = LinearLayoutManager(
-            this.activity,
-            RecyclerView.VERTICAL,
-            false
-        )
-
-        view.recyclerLanguageFilter.layoutManager = languageLayoutManager
-        adapter =
-            LanguageFilterAdapter(this)
-        view.recyclerLanguageFilter.adapter = adapter
+        view.recyclerLanguageFilter.apply {
+            layoutManager = languageLayoutManager
+            adapter = languageAdapter
+        }
 
         builder.setView(view)
 

@@ -29,21 +29,17 @@ class LanguageFilterAdapter(private val languageSelectedListener: LanguageSelect
     }
 
     override fun onBindViewHolder(holder: LanguageViewHolder, position: Int) {
-        val obj = languageList[position]
-
-        holder.view.lang = obj
-        holder.view.listener = languageSelectedListener
-        holder.view.position = position
-        holder.view.executePendingBindings()
+        holder.view.apply {
+            lang = languageList[position]
+            listener = languageSelectedListener
+            pos = position
+            executePendingBindings()
+        }
     }
 
-    override fun getItemId(index: Int): Long {
-        return getItemId(index)
-    }
+    override fun getItemId(index: Int): Long = getItemId(index)
 
-    override fun getItemCount(): Int {
-        return languageList.size
-    }
+    override fun getItemCount(): Int = languageList.size
 
     interface LanguageSelectedListener {
         fun languageSelected(language: ProgrammingLanguage, position: Int)

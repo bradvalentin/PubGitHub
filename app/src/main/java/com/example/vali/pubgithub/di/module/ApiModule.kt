@@ -2,11 +2,9 @@ package com.example.vali.pubgithub.di.module
 
 import android.app.Application
 import com.example.vali.pubgithub.data.remote.api.GitHubApiService
-import com.example.vali.pubgithub.utils.Constants.GITHUB_BASE_URL
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
@@ -18,6 +16,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+
+const val GITHUB_BASE_URL = "https://api.github.com/"
+const val CONNECT_TIMEOUT = 30L
+const val READ_TIMEOUT = 30L
 
 @Module
 class ApiModule {
@@ -38,7 +40,7 @@ class ApiModule {
     @Provides
     @Singleton
     fun provideCache(application: Application): Cache {
-        val cacheSize = (10 * 1024 * 1024).toLong() // 10 MB
+        val cacheSize = (10 * 1024 * 1024).toLong()
         val httpCacheDirectory = File(application.cacheDir, "http-cache")
         return Cache(httpCacheDirectory, cacheSize)
     }
@@ -54,8 +56,8 @@ class ApiModule {
         httpClient.cache(cache)
         httpClient.addInterceptor(logging)
         httpClient.retryOnConnectionFailure(true)
-        httpClient.connectTimeout(30, TimeUnit.SECONDS)
-        httpClient.readTimeout(30, TimeUnit.SECONDS)
+        httpClient.connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+        httpClient.readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
         return httpClient.build()
     }
 

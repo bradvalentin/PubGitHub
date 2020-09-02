@@ -7,7 +7,7 @@
         <import type="android.view.View" />
 
         <variable
-                name="position"
+                name="pos"
                 type="int"/>
 
         <variable
@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
-            android:onSingleClick='@{() -> listener.languageSelected(lang, position)}'
+            android:onSingleClick='@{() -> listener.languageSelected(lang, pos)}'
             android:background="@color/colorGreyLighter">
 
         <ImageView

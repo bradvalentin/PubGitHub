@@ -25,8 +25,9 @@ import kotlin.random.Random
 
 class LoginActivity : AppCompatActivity(), LoginClickInterface {
 
-    lateinit var provider: OAuthProvider.Builder
-    lateinit var loginViewModel: LoginViewModel
+    private val provider: OAuthProvider.Builder by lazy { OAuthProvider.newBuilder(getString(R.string.github_site)) }
+    private val loginViewModel: LoginViewModel by lazy { ViewModelProvider(this, this.viewModeFactory).get(LoginViewModel::class.java) }
+
     @Inject
     lateinit var viewModeFactory: LoginViewModelFactory
 
@@ -38,19 +39,9 @@ class LoginActivity : AppCompatActivity(), LoginClickInterface {
             DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding.listener = this
 
-        provider = OAuthProvider.newBuilder(getString(R.string.github_site))
+        provider.scopes = arrayListOf(getString(R.string.public_repo))
 
-        val scopes = object : ArrayList<String>() {
-            init {
-                add(getString(R.string.public_repo))
-            }
-        }
-
-        provider.scopes = scopes
-
-        loginViewModel = ViewModelProvider(this, this.viewModeFactory).get(LoginViewModel::class.java)
         observeViewModel()
-
     }
 
     override fun onResume() {
@@ -63,21 +54,18 @@ class LoginActivity : AppCompatActivity(), LoginClickInterface {
             task?.let {
                 loginExistingUser(it)
             }
-
         })
 
         loginViewModel.loginNewUser.observe(this, Observer { fa ->
             fa?.let {
                 loginNewUser(it)
             }
-
         })
 
         loginViewModel.loginUserSuccess.observe(this, Observer { owner ->
             owner?.let {
                 loginUserSuccess(it)
             }
-
         })
     }
 
@@ -110,12 +98,15 @@ class LoginActivity : AppCompatActivity(), LoginClickInterface {
 
     private fun loginUserFail(text: String) {
         motionLayoutLoginLoading.transitionToState(R.id.start)
-        Toast.makeText(this, resources.getString(R.string.some_error).plus(": ").plus(text), Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            this,
+            getString(R.string.some_error).plus(getString(R.string.error_text_separator)).plus(text),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun startRepoListActivity() {
-        val intent = Intent(this, RepoListActivity::class.java)
-        startActivity(intent)
+        startActivity(Intent(this, RepoListActivity::class.java))
         finish()
     }
 
@@ -123,6 +114,5 @@ class LoginActivity : AppCompatActivity(), LoginClickInterface {
         loginViewModel.checkUserLogin()
         motionLayoutLoginLoading.transitionToState(R.id.middle)
     }
-
 
 }

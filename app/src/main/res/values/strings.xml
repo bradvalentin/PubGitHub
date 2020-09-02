@@ -18,6 +18,10 @@
     <string name="search_view_hint">Search here...</string>
     <string name="public_repo">public_repo</string>
     <string name="github_site">github.com</string>
+    <string name="owner_shared_text">owner</string>
+    <string name="language_list_text">languageList</string>
+    <string name="error_text_separator">\": \"</string>
+    <string name="language_querry_param">+language:</string>
 
     <string-array name="languages">
         <item>"ABAP"</item>

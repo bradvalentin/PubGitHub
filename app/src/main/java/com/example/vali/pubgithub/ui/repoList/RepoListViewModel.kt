@@ -3,7 +3,6 @@ package com.example.vali.pubgithub.ui.repoList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-
 import com.example.vali.pubgithub.data.GitHubRepository
 import com.example.vali.pubgithub.data.entity.RepoEntity
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -13,27 +12,36 @@ import io.reactivex.schedulers.Schedulers
 
 class RepoListViewModel(private val githubRepository: GitHubRepository) : ViewModel() {
 
-    private val _repos = MutableLiveData<List<RepoEntity>>()
-    val repos: LiveData<List<RepoEntity>>
-        get() = _repos
-    private val _reposLoadError = MutableLiveData<String>()
-    val reposLoadError: LiveData<String>
-        get() = _reposLoadError
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean>
-        get() = _loading
-    private val _clearRepos = MutableLiveData<Boolean>()
-    val clearRepos: LiveData<Boolean>
-        get() = _clearRepos
-    private val _emptyRepos = MutableLiveData<Boolean>()
-    val emptyRepos: LiveData<Boolean>
-        get() = _emptyRepos
+    val repos: LiveData<List<RepoEntity>> = MutableLiveData<List<RepoEntity>>()
+    private fun setRepos(r: List<RepoEntity>?) {
+        (repos as MutableLiveData).value = r
+    }
+
+    val reposLoadError: LiveData<String> = MutableLiveData<String>()
+    private fun setReposLoadError(err: String) {
+        (reposLoadError as MutableLiveData).value = err
+    }
+
+    val loading: LiveData<Boolean> = MutableLiveData<Boolean>()
+    private fun setLoading(load: Boolean) {
+        (loading as MutableLiveData).value = load
+    }
+
+    val clearRepos: LiveData<Boolean> = MutableLiveData<Boolean>()
+    private fun setClearRepos(clear: Boolean) {
+        (clearRepos as MutableLiveData).value = clear
+    }
+
+    val emptyRepos: LiveData<Boolean> = MutableLiveData<Boolean>()
+    private fun setEmptyRepos(empty: Boolean) {
+        (emptyRepos as MutableLiveData).value = empty
+    }
 
     private var disposeBag: CompositeDisposable = CompositeDisposable()
 
     fun getAllRepos(since: Long, withLoading: Boolean) {
         if (withLoading) {
-            _loading.value = true
+            setLoading(true)
         }
         disposeBag.add(
             githubRepository.getAllRepos(since)
@@ -43,21 +51,21 @@ class RepoListViewModel(private val githubRepository: GitHubRepository) : ViewMo
                 .subscribe(
                     { repoList ->
                         if (since == 0L) {
-                            _emptyRepos.value = repoList.body()?.size ?: 0 == 0
-                            _clearRepos.value = true
+                            setEmptyRepos(repoList.body()?.size ?: 0 == 0)
+                            setClearRepos(true)
                         }
 
-                        _repos.value = repoList.body()
+                        setRepos(repoList.body())
 
-                        _loading.value = false
+                        setLoading(false)
 
                     },
                     { tr ->
                         tr.localizedMessage?.let { it ->
-                            _reposLoadError.value = it
+                            setReposLoadError(it)
                         }
 
-                        _loading.value = false
+                        setLoading(false)
 
                     }
 
@@ -66,7 +74,7 @@ class RepoListViewModel(private val githubRepository: GitHubRepository) : ViewMo
     }
 
     fun getSearchRepos(query: String, page: Long) {
-        _loading.value = true
+        setLoading(true)
         disposeBag.add(
             githubRepository.getSearchRepos(query, page)
                 .subscribeOn(Schedulers.io())
@@ -83,21 +91,20 @@ class RepoListViewModel(private val githubRepository: GitHubRepository) : ViewMo
                 }
                 .subscribe({ repoList ->
                     if (page == 0L) {
-                        _emptyRepos.value = repoList.body()?.items?.size ?: 0 == 0
-                        _clearRepos.value = true
+                        setEmptyRepos(repoList.body()?.items?.size ?: 0 == 0)
+                        setClearRepos(true)
                     }
 
-                    _repos.value = repoList.body()?.items
+                    setRepos(repoList.body()?.items)
 
-                    _loading.value = false
-
+                    setLoading(false)
                 },
                     { tr ->
                         tr.localizedMessage?.let { it ->
-                            _reposLoadError.value = it
+                            setReposLoadError(it)
                         }
-                        _loading.value = false
-                        _emptyRepos.value = true
+                        setLoading(false)
+                        setEmptyRepos(true)
 
                     })
         )
